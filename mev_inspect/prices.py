@@ -7,7 +7,7 @@ from mev_inspect.schemas.prices import COINGECKO_ID_BY_ADDRESS, TOKEN_ADDRESSES,
 
 
 def fetch_prices() -> List[Price]:
-    coingecko_api = CoinGeckoAPI()
+    coingecko_api = CoinGeckoAPI(api_key='CG-hBJ8VqSLjwaVUjWwpLEaBCQN')
     prices = []
 
     for token_address in TOKEN_ADDRESSES:
