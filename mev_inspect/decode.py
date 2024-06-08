@@ -36,9 +36,23 @@ class ABIDecoder:
             for input in func.inputs
         ]
 
+        bytes_array = hexstr_to_bytes(params)
+
+        if len(types) > 0:
+            last_element_datatype = types[-1]
+            if last_element_datatype != "bytes":
+                pass
+            else:
+                # optionally pad the bytes array to 32 bytes
+                last_bytes = len(hexstr_to_bytes(params)) % 32
+                diff_to_32 = 32 - last_bytes
+                for to_add in range(diff_to_32):
+                    bytes_array += b'\x00'
+
         try:
-            decoded = decode_abi(types, hexstr_to_bytes(params))
-        except (InsufficientDataBytes, NonEmptyPaddingBytes, OverflowError):
+            decoded = decode_abi(types, bytes_array)
+        except (InsufficientDataBytes, NonEmptyPaddingBytes, OverflowError) as ex:
+            print(ex)
             return None
 
         return CallData(
